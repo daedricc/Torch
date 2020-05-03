@@ -1,0 +1,5 @@
+name: Torch
+main: com.climpy.torch.TorchPlugin
+version: 1.0.0
+author: ClimpyX
+depend: [Redrock, Library]

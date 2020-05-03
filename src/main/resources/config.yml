@@ -1,0 +1,6 @@
+mongodb:
+  user: climpy
+  database: admin
+  password: root
+  host: localhost
+  port: 27017

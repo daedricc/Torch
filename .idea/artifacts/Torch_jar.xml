@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Torch:jar">
+    <output-path>$USER_HOME$/Desktop/Proxy/Redrock/plugins</output-path>
+    <root id="archive" name="Torch.jar">
+      <element id="module-output" name="Torch" />
+    </root>
+  </artifact>
+</component>
