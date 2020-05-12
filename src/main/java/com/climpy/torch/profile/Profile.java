@@ -195,4 +195,8 @@ public class Profile {
 
         player.recalculatePermissions();
     }
+
+    public String getColoredName() {
+        return getRank().getColor() + getName();
+    }
 }

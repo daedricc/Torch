@@ -26,30 +26,29 @@ public class RankCommand extends RedrockCommand {
     public RedrockResultCommand execute(CommandSender sender, Command command, String label, String[] args) {
         ProfileManager profileManager = TorchPlugin.getInstance().getProfileManager();
         Profile profile = profileManager.getProfile(sender.getName());
-        if (!profile.toPlayer().hasPermission("redrock.moderator")) {
+        if (!profile.toPlayer().hasPermission("torch.moderator")) {
             return RedrockResultCommand.INVALID_PERMISSION;
         }
 
         if (args.length == 0) {
             profile.toPlayer().sendMessage(C.CHAT_BAR);
             profile.toPlayer().sendMessage(C.GOLD + C.BOLD + "Rütbe Komutları");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " create [rütbe] " + C.GRAY + "- Yeni rütbe ekler");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " delete [rütbe] " + C.GRAY + "- Bir rütbe siler");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setprefix [rütbe] <prefix> " + C.GRAY + "- Rütbenin prefixini ayarlar.");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setcolor [rütbe] <renk> " + C.GRAY + "- Rütbenin rengini ayarlar");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setweight [rank] <weight>" + C.GRAY + "- Rütbenin ağırlığını ayarlar");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " addperm [rank] <yetki> " + C.GRAY + "- Rütbeye yetki ekler");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " delperm [rank] <yetki> " + C.GRAY + "- Rütbeden yetki siler");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " inhert [parent] <child>" + C.GRAY + "- Rütbenin yetki mirasini ayalar");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " dump [rank] " + C.GRAY + "- Rütbenin yetkilerini gösterir");
-            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " list  " + C.GRAY + "- Tüm rütbeleri listeler");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " create [rütbe] " + C.GRAY + "- " + C.WHITE + "Yeni rütbe ekler");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " delete [rütbe] " + C.GRAY + "- " + C.WHITE + "Bir rütbe siler");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setprefix [rütbe] <prefix> " + C.GRAY + "- " + C.WHITE + "Rütbenin prefixini ayarlar.");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setcolor [rütbe] <renk> " + C.GRAY + "- " + C.WHITE + "Rütbenin rengini ayarlar");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setweight [rank] <weight>" + C.GRAY + "- " + C.WHITE + "Rütbenin ağırlığını ayarlar");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " addperm [rank] <yetki> " + C.GRAY + "- " + C.WHITE + "Rütbeye yetki ekler");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " delperm [rank] <yetki> " + C.GRAY + "- " + C.WHITE + "Rütbeden yetki siler");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " dump [rank] " + C.GRAY + "- " + C.WHITE + "Rütbenin bilgilerini gösterir");
+            profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " list  " + C.GRAY + "- " + C.WHITE + "Tüm rütbeleri listeler");
             profile.toPlayer().sendMessage(C.CHAT_BAR);
 
             return RedrockResultCommand.SUCCESS;
         }
 
         switch (args[0]) {
-            case "create": {
+            case "create" : {
                 if (args.length != 2) {
                     profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " create [rütbe]");
                     break;
@@ -68,7 +67,7 @@ public class RankCommand extends RedrockCommand {
                 break;
             }
 
-            case "delete": {
+            case "delete" : {
                 if (args.length != 2) {
                     profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " delete [rütbe]");
                     break;
@@ -91,7 +90,7 @@ public class RankCommand extends RedrockCommand {
                 break;
             }
 
-            case "setprefix": {
+            case "setprefix" : {
                 if (args.length != 3) {
                     profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " setprefix [rütbe] <prefix>");
                     break;
@@ -112,7 +111,7 @@ public class RankCommand extends RedrockCommand {
                 break;
             }
 
-            case "setcolor": {
+            case "setcolor" : {
                 if (args.length != 3) {
                     profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " setprefix [rütbe] <renk>");
                     break;
@@ -167,9 +166,9 @@ public class RankCommand extends RedrockCommand {
 
                 profile.toPlayer().sendMessage(C.translate(rank.getColoredName() + " &erütbesinin ağırlığı &f'" + rank.getWeight() + "' &eolarak güncellendi."));
                 break;
-            } case "addpermission" : {
+            } case "addpermission" : case "addperm" : {
                 if (args.length != 3) {
-                    profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " addpermission (rütbe) [permission]");
+                    profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " " + args[0] + " (rütbe) [permission]");
                     break;
                 }
 
@@ -191,9 +190,9 @@ public class RankCommand extends RedrockCommand {
 
                 profile.toPlayer().sendMessage(C.translate(rank.getColoredName() + " &erütbesine &d'" + permission + "' &eyetkisi eklendi."));
                 break;
-            } case "removepermission" : {
+            } case "removepermission" : case "removeperm" : case "delperm" :  {
                 if (args.length != 3) {
-                    profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " removepermission (rütbe) [permission]");
+                    profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " " + args[0] + " (rütbe) [permission]");
                     break;
                 }
 
@@ -218,35 +217,6 @@ public class RankCommand extends RedrockCommand {
                 profile.toPlayer().sendMessage(C.translate("&6&lRütbeler"));
                 Rank.getRanks().values().stream().sorted(Comparator.comparingInt(Rank::getWeight)).forEach(ranks -> profile.toPlayer().sendMessage(C.translate(" &f- " + ranks.getColoredName() + " &r" + (ranks.isDefaultRank() ? "&7(Varsayılan Rütbe)" : "") + " (Ağırlık: " + ranks.getWeight() + ") ")));
                 profile.toPlayer().sendMessage(C.CHAT_BAR);
-                break;
-            } case "inherit" : {
-                if (args.length != 3) {
-                    profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " inherit (birincil) [ikincil]");
-                    break;
-                }
-
-                String parentName = args[1];
-                Rank parent = Rank.getRankByDisplayName(parentName);
-                if (parent == null) {
-                    profile.toPlayer().sendMessage(C.RED + "Bu isme sahip bir birincil rütbe mevcut değil.");
-                    break;
-                }
-
-                String childName = args[2];
-                Rank child = Rank.getRankByDisplayName(childName);
-                if (child == null) {
-                    profile.toPlayer().sendMessage(C.RED + "Bu isme sahip bir ikincil rütbe mevcut değil.");
-                    break;
-                }
-
-                boolean removed = false;
-                if (parent.getInherited().remove(child)) {
-                    removed = true;
-                } else {
-                    parent.getInherited().add(child);
-                }
-                parent.saveRanks();
-                profile.toPlayer().sendMessage(C.translate("&eYou made &r" + parent.getColoredName() + (removed ? " &cno longer inherit" : " &ainherit") + " &r" + child.getColoredName()));
                 break;
             } case "dump" : {
                 if (args.length != 2) {
@@ -275,17 +245,6 @@ public class RankCommand extends RedrockCommand {
                 if (rank.getAllPermissions().size() > 0)
                     profile.toPlayer().sendMessage(C.translate("&r" + perm.toString()));
 
-                profile.toPlayer().sendMessage(" ");
-                profile.toPlayer().sendMessage(C.translate("&eMiraslar: &r(" + rank.getInherited().size() + ")"));
-                for (Rank inherit : rank.getInherited()) {
-                    Rank other = Rank.getRankByDisplayName(inherit.getDisplayName());
-                    if (other == null) {
-                        profile.toPlayer().sendMessage(C.translate(" &f* &r" + inherit.getColoredName()));
-                        continue;
-                    }
-
-                    profile.toPlayer().sendMessage(C.translate(" &f* &r" + other.getColoredName()));
-                }
 
                 profile.toPlayer().sendMessage(C.CHAT_BAR);
             break;

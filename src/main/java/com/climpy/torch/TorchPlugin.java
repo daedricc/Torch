@@ -1,13 +1,14 @@
 package com.climpy.torch;
 
-import com.climpy.redrock.RedrockPlugin;
 import com.climpy.redrock.commands.RedrockRegisterCommand;
 import com.climpy.torch.config.FileConfig;
 import com.climpy.torch.mongo.MongoConnection;
 import com.climpy.torch.profile.ProfileManager;
+import com.climpy.torch.profile.extnds.ProfileCommand;
 import com.climpy.torch.profile.listener.ProfileListener;
 import com.climpy.torch.profile.rank.Rank;
 import com.climpy.torch.profile.rank.extnds.RankCommand;
+import com.climpy.torch.profile.rank.extnds.SetRankCommand;
 import com.climpy.torch.punishments.PunishmentListener;
 import com.climpy.torch.punishments.PunishmentManager;
 import com.climpy.torch.punishments.args.*;
@@ -79,6 +80,8 @@ public class TorchPlugin extends JavaPlugin {
         this.redrockRegisterCommand.registerBukkitCommand(new HistoryCommand(), TorchPlugin.getInstance());
 
         this.redrockRegisterCommand.registerBukkitCommand(new RankCommand(), TorchPlugin.getInstance());
+        this.redrockRegisterCommand.registerBukkitCommand(new ProfileCommand(), TorchPlugin.getInstance());
+        this.redrockRegisterCommand.registerBukkitCommand(new SetRankCommand(), TorchPlugin.getInstance());
     }
 
     public static TorchPlugin getInstance() { return instance; }
