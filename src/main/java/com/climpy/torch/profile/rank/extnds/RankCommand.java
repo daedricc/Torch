@@ -32,7 +32,7 @@ public class RankCommand extends RedrockCommand {
 
         if (args.length == 0) {
             profile.toPlayer().sendMessage(C.CHAT_BAR);
-            profile.toPlayer().sendMessage(C.GOLD + C.BOLD + "Rütbe Komutları");
+            profile.toPlayer().sendMessage(C.BLUE + C.BOLD + "Rütbe Komutları");
             profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " create [rütbe] " + C.GRAY + "- " + C.WHITE + "Yeni rütbe ekler");
             profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " delete [rütbe] " + C.GRAY + "- " + C.WHITE + "Bir rütbe siler");
             profile.toPlayer().sendMessage(C.YELLOW + "/" + label + " setprefix [rütbe] <prefix> " + C.GRAY + "- " + C.WHITE + "Rütbenin prefixini ayarlar.");

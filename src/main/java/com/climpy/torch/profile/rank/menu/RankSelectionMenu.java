@@ -8,18 +8,14 @@ import com.climpy.redrock.inventory.content.Pagination;
 import com.climpy.redrock.inventory.content.SlotIterator;
 import com.climpy.torch.profile.Profile;
 import com.climpy.torch.profile.rank.Rank;
-import com.climpy.torch.punishments.Punishment;
-import com.climpy.torch.punishments.history.menu.HistoryCategoryMenu;
 import com.climpy.torch.utils.C;
 import com.climpy.torch.utils.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Getter @Setter
 public class RankSelectionMenu implements InventoryProvider {
@@ -58,7 +54,6 @@ public class RankSelectionMenu implements InventoryProvider {
         Pagination pagination = contents.pagination();
         ClickableItem[] items = new ClickableItem[ranks.size()];
 
-
         for (int i = 0; i < items.length; i++) {
             Rank rank = ranks.get(i);
             StringJoiner perm = new StringJoiner(", ");
@@ -66,10 +61,10 @@ public class RankSelectionMenu implements InventoryProvider {
                 perm.add(permissions);
             }
 
-            items[i] = ClickableItem.of(ItemUtils.createItem(Material.STAINED_GLASS_PANE, C.GOLD +
+            items[i] = ClickableItem.of(ItemUtils.createItem(Material.STAINED_GLASS_PANE, C.BLUE +
                     (rank.isDefaultRank() ?
-                            (C.GOLD + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")") + C.GRAY + " (" + C.WHITE + "Varsayılan Rütbe" + C.GRAY + ")"
-                            : (C.GOLD + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")")), 1,
+                            (C.BLUE + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")") + C.GRAY + " (" + C.WHITE + "Varsayılan Rütbe" + C.GRAY + ")"
+                            : (C.BLUE + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")")), 1,
 
                     (profile.getRank() == rank ? (short) 5 : (short) 14),
                     (profile.getRank() == rank ? Arrays.asList(
@@ -102,8 +97,8 @@ public class RankSelectionMenu implements InventoryProvider {
                 profile.setRank(rank);
                 profile.saveProfile();
 
-                player.sendMessage(profile.getColoredName() + C.GOLD + " için rütbe " + rank.getColoredName() + C.GOLD +  " olarak değiştirildi.");
-                profile.toPlayer().sendMessage(C.GOLD + "Rütbeniz " + rank.getColoredName() + C.GOLD + " olarak değiştirildi.");
+                player.sendMessage(profile.getColoredName() + C.BLUE + " için rütbe " + rank.getColoredName() + C.BLUE +  " olarak değiştirildi.");
+                profile.toPlayer().sendMessage(C.BLUE + "Rütbeniz " + rank.getColoredName() + C.BLUE + " olarak değiştirildi.");
             });
 
             pagination.setItems(items);
