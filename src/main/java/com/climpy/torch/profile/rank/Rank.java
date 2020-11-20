@@ -35,13 +35,11 @@ public class Rank {
     private int weight;
     private ChatColor color;
     private boolean defaultRank;
-    private List<Rank> inherited;
 
     public Rank(String displayName) {
         this.prefix = "";
         this.color = ChatColor.WHITE;
         this.permissions = new ArrayList<>();
-        this.inherited = new ArrayList<>();
         this.uniqueUUID = UUID.randomUUID();
         this.displayName = displayName;
         ranks.put(this.uniqueUUID, this);
@@ -51,7 +49,6 @@ public class Rank {
         this.prefix = "";
         this.color = ChatColor.WHITE;
         this.permissions = new ArrayList<>();
-        this.inherited = new ArrayList<>();
         this.uniqueUUID = uuid;
         this.displayName = displayName;
     }
@@ -60,7 +57,6 @@ public class Rank {
         this.prefix = "";
         this.color = ChatColor.WHITE;
         this.permissions = new ArrayList<>();
-        this.inherited = new ArrayList<>();
         this.uniqueUUID = uniqueUUID;
         this.displayName = displayName;
         this.prefix = prefix;
@@ -78,23 +74,7 @@ public class Rank {
         this.color = ChatColor.valueOf(document.getString("color"));
         this.weight = document.getInteger("weight");
         this.defaultRank = document.getBoolean("defaultRank");
-
-        // this.permissions = new Gson().fromJson(document.getString("permissions"), new TypeToken<List<String>>() {}.getType());
-        //this.inherited = new Gson().fromJson(document.getString("inherits"), new TypeToken<List<String>>() {}.getType());
-
-
-        for (JsonElement permissions : new JsonParser().parse(document.getString("permissions")).getAsJsonArray()) {
-            this.permissions.add(permissions.getAsString());
-        }
-
-        for (JsonElement element : new JsonParser().parse(document.getString("inherits")).getAsJsonArray()) {
-            UUID rankUUID = UUID.fromString(element.getAsString());
-            Rank rank = ranks.get(rankUUID);
-            if (rank == null)
-                continue;
-
-            this.inherited.add(rank);
-        }
+        this.permissions = new Gson().fromJson(document.getString("permissions"), new TypeToken<List<String>>() {}.getType());
     }
 
     public void saveRanks() {
@@ -106,21 +86,7 @@ public class Rank {
         document.put("color", this.color.name());
         document.put("weight", this.weight);
         document.put("defaultRank", this.defaultRank);
-       // document.put("permissions", new Gson().toJson(this.permissions));
-      //  document.put("inherits", new Gson().toJson(this.inherited.stream().map(Rank::getUniqueUUID).map(UUID::toString).collect(Collectors.toList())));
-
-        JsonArray permissions = new JsonArray();
-        for (String permission : this.permissions) {
-            permissions.add(permission);
-        }
-
-        JsonArray inherits = new JsonArray();
-        for (Rank rank : this.inherited) {
-            inherits.add(rank.getUniqueUUID().toString());
-        }
-
-        document.put("permissions", permissions.toString());
-        document.put("inherits", inherits.toString());
+        document.put("permissions", new Gson().toJson(this.permissions));
 
         MongoAPI.replaceOne("ranks", Filters.eq("uuid", this.uniqueUUID.toString()), document, true);
     }
@@ -139,32 +105,15 @@ public class Rank {
     }
 
     public boolean hasPermission(String permission) {
-        if (this.permissions.contains(permission))
+        if (this.permissions.contains(permission)) {
             return true;
-        for (Rank rank : this.inherited) {
-            if (rank.hasPermission(permission))
-                return true;
         }
+
         return false;
     }
 
-    public boolean canInherit(Rank rankToCheck) {
-        if (this.inherited.contains(rankToCheck) || rankToCheck.inherited.contains(this))
-            return false;
-        for (Rank rank : this.inherited) {
-            if (!rank.canInherit(rankToCheck))
-                return false;
-        }
-        return true;
-    }
-
     public List<String> getAllPermissions() {
-        List<String> permissions = new ArrayList<>(this.permissions);
-        for (Rank rank : this.inherited) {
-            permissions.addAll(rank.getAllPermissions());
-        }
-
-        return permissions;
+        return new ArrayList<>(this.permissions);
     }
 
     public void delete() {
