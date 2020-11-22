@@ -27,6 +27,7 @@ public class CollectionManager {
 
         this.collections.add("profiles");
         this.collections.add("ranks");
+        this.collections.add("report");
     }
 
     public void createDataConnection() {

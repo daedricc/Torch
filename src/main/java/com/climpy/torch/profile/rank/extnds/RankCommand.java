@@ -3,6 +3,8 @@ package com.climpy.torch.profile.rank.extnds;
 import com.climpy.redrock.RedrockPlugin;
 import com.climpy.redrock.commands.RedrockCommand;
 import com.climpy.redrock.commands.RedrockResultCommand;
+import com.climpy.redrock.redis.data.DataPublisher;
+import com.climpy.redrock.redis.messages.CreateRankSubscriber;
 import com.climpy.redrock.utils.C;
 import com.climpy.redrock.utils.MiscUtils;
 import com.climpy.torch.TorchPlugin;
@@ -10,6 +12,7 @@ import com.climpy.torch.profile.Profile;
 import com.climpy.torch.profile.ProfileManager;
 import com.climpy.torch.profile.rank.Rank;
 import com.climpy.torch.utils.ParseUtils;
+import com.google.gson.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,7 +29,7 @@ public class RankCommand extends RedrockCommand {
     public RedrockResultCommand execute(CommandSender sender, Command command, String label, String[] args) {
         ProfileManager profileManager = TorchPlugin.getInstance().getProfileManager();
         Profile profile = profileManager.getProfile(sender.getName());
-        if (!profile.toPlayer().hasPermission("torch.moderator")) {
+        if (!profile.toPlayer().hasPermission("torch.staff")) {
             return RedrockResultCommand.INVALID_PERMISSION;
         }
 
@@ -64,6 +67,12 @@ public class RankCommand extends RedrockCommand {
                 rank.saveRanks();
 
                 profile.toPlayer().sendMessage(C.WHITE + rank.getColoredName() + C.YELLOW + " adında bir küresel rütbe oluşturdunuz" + C.GRAY + ".");
+
+                JsonObject reportObject = new JsonObject();
+                reportObject.addProperty("rank", rank.getDisplayName());
+
+                DataPublisher dataPublisher = RedrockPlugin.getInstance().getRedisConnection().getDataPublisher();
+                dataPublisher.write("create_rank", reportObject);
                 break;
             }
 
@@ -87,11 +96,17 @@ public class RankCommand extends RedrockCommand {
 
                 rank.delete();
                 profile.toPlayer().sendMessage(C.WHITE + rank.getColoredName() + C.YELLOW + " adındaki rütbeyi kaldırdınız" + C.GRAY + ".");
+
+                JsonObject reportObject = new JsonObject();
+                reportObject.addProperty("rank", rank.getColoredName());
+
+                DataPublisher dataPublisher = RedrockPlugin.getInstance().getRedisConnection().getDataPublisher();
+                dataPublisher.write("delete_rank", reportObject);
                 break;
             }
 
             case "setprefix" : {
-                if (args.length != 3) {
+                if (args.length < 3) {
                     profile.toPlayer().sendMessage(C.RED + "Kullanım: /" + label + " setprefix [rütbe] <prefix>");
                     break;
                 }

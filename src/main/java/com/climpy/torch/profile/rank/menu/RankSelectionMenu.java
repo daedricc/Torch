@@ -30,7 +30,7 @@ public class RankSelectionMenu implements InventoryProvider {
         return SmartInventory.builder()
                 .provider(new RankSelectionMenu(profile))
                 .size(5, 9)
-                .title(profile.getName() + " için rütbe seçiniz.")
+                .title("Select a new rank for " + profile.getName())
                 .build();
     }
 
@@ -61,7 +61,8 @@ public class RankSelectionMenu implements InventoryProvider {
                 perm.add(permissions);
             }
 
-            items[i] = ClickableItem.of(ItemUtils.createItem(Material.STAINED_GLASS_PANE, C.BLUE +
+            items[i] = ClickableItem.of(ItemUtils.createItem(Material.STAINED_GLASS_PANE,
+                    C.BLUE +
                     (rank.isDefaultRank() ?
                             (C.BLUE + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")") + C.GRAY + " (" + C.WHITE + "Varsayılan Rütbe" + C.GRAY + ")"
                             : (C.BLUE + "Rütbe Bilgisi " + C.GRAY + "(" + C.WHITE + rank.getColoredName() + C.GRAY + ")")), 1,

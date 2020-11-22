@@ -4,7 +4,9 @@ import com.climpy.redrock.RedrockPlugin;
 import com.climpy.torch.TorchPlugin;
 import com.climpy.torch.locale.Locale;
 import com.climpy.torch.mongo.MongoAPI;
+import com.climpy.torch.profile.color.ColorType;
 import com.climpy.torch.profile.rank.Rank;
+import com.climpy.torch.profile.symbol.SymbolType;
 import com.climpy.torch.punishments.Punishment;
 import com.climpy.torch.punishments.PunishmentManager;
 import com.google.gson.Gson;
@@ -34,6 +36,9 @@ public class Profile {
 
     private boolean staffMode = false, staffChat = false, vanishStatus = false, frozenStatus = false, messagesVisible = true, messagingSounds = true,
             socialSpy = false, staffChatVisible = true, loaded = false;
+
+    private SymbolType symbolType = SymbolType.SYMBOL_0;
+    private ColorType colorType = ColorType.COLOR_DEFAULT;
 
     private long coins, lastLoginTime;
     private Long firstLoginTime;
@@ -94,6 +99,9 @@ public class Profile {
         this.vanishStatus = document.getBoolean("vanishStatus", false);
         this.frozenStatus = document.getBoolean("frozenStatus", false);
 
+        this.symbolType = SymbolType.getSymbolOrDefault(document.getString("symbolType"));
+        this.colorType = ColorType.getColorOrDefault(document.getString("colorType"));
+
         this.firstLoginTime = document.getLong("firstLoginTime");
         this.lastLoginTime = document.getLong("lastLoginTime");
 
@@ -132,6 +140,9 @@ public class Profile {
         document.put("staffChat", this.staffChat);
         document.put("vanishStatus", this.vanishStatus);
         document.put("frozenStatus", this.frozenStatus);
+
+        document.put("symbolType", this.symbolType.getDisplayName().toLowerCase(java.util.Locale.ENGLISH));
+        document.put("colorType", this.colorType.getName().toLowerCase(java.util.Locale.ENGLISH));
 
         document.put("firstLoginTime", this.firstLoginTime);
         document.put("lastLoginTime", this.lastLoginTime);
@@ -197,6 +208,6 @@ public class Profile {
     }
 
     public String getColoredName() {
-        return getRank().getColor() + getName();
+        return getColorType().getChatColor() + getName();
     }
 }

@@ -1,6 +1,7 @@
 package com.climpy.torch;
 
 import com.climpy.redrock.commands.RedrockRegisterCommand;
+import com.climpy.torch.chat.Chat;
 import com.climpy.torch.chat.manager.ChatManager;
 import com.climpy.torch.commands.bukkit.*;
 import com.climpy.torch.commands.bukkit.teleport.TeleportAllCommand;
@@ -15,6 +16,8 @@ import com.climpy.torch.config.FileConfig;
 import com.climpy.torch.locale.Locale;
 import com.climpy.torch.mongo.MongoConnection;
 import com.climpy.torch.profile.ProfileManager;
+import com.climpy.torch.profile.color.commands.SetColorCommand;
+import com.climpy.torch.profile.cosmetic.commands.CosmeticCommand;
 import com.climpy.torch.profile.listener.ProfileListener;
 import com.climpy.torch.profile.moderator.FollowManager;
 import com.climpy.torch.profile.moderator.StaffManager;
@@ -26,6 +29,7 @@ import com.climpy.torch.profile.moderator.commands.VanishCommand;
 import com.climpy.torch.profile.rank.Rank;
 import com.climpy.torch.profile.rank.extnds.RankCommand;
 import com.climpy.torch.profile.rank.extnds.SetRankCommand;
+import com.climpy.torch.profile.symbol.commands.SetSymbolCommand;
 import com.climpy.torch.punishments.PunishmentListener;
 import com.climpy.torch.punishments.PunishmentManager;
 import com.climpy.torch.punishments.args.*;
@@ -93,6 +97,7 @@ public class TorchPlugin extends JavaPlugin {
 
         pluginManager.registerEvents(new ProfileListener(), this);
         pluginManager.registerEvents(new PunishmentListener(), this);
+        pluginManager.registerEvents(new Chat(), this);
     }
 
 
@@ -152,6 +157,10 @@ public class TorchPlugin extends JavaPlugin {
         this.redrockRegisterCommand.registerBukkitCommand(new UnFollowCommand(), TorchPlugin.getInstance());
         this.redrockRegisterCommand.registerBukkitCommand(new StaffModeCommand(), TorchPlugin.getInstance());
         this.redrockRegisterCommand.registerBukkitCommand(new VanishCommand(), TorchPlugin.getInstance());
+
+        this.redrockRegisterCommand.registerBukkitCommand(new SetSymbolCommand(), TorchPlugin.getInstance());
+        this.redrockRegisterCommand.registerBukkitCommand(new SetColorCommand(), TorchPlugin.getInstance());
+        this.redrockRegisterCommand.registerBukkitCommand(new CosmeticCommand(), TorchPlugin.getInstance());
     }
 
     public static TorchPlugin getInstance() { return instance; }

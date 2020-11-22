@@ -17,7 +17,7 @@ public class SetRankCommand extends RedrockCommand {
     @Override
     public RedrockResultCommand execute(CommandSender sender, Command command, String label, String[] args) {
         Profile profile = TorchPlugin.getInstance().getProfileManager().getProfile(sender.getName());
-        if(!profile.toPlayer().hasPermission("torch.moderator")) {
+        if(!profile.toPlayer().hasPermission("torch.staff")) {
             return RedrockResultCommand.INVALID_PERMISSION;
         }
 
